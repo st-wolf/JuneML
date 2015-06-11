@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-def decision_boundary(theta, *args):
+def decision_boundary(param, *args):
 	# Рисует проекцию разделяющей поверхности на плоскость двух параметров
 	pass
 

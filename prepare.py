@@ -57,5 +57,8 @@ def load(file_name):
 
 	return X, y
 
-# X, y = load('./data/train.csv')
+def normalize(X):
+	# Нормализаця. Значения всех признаков переводятся в диапазон [-1,1]
+	return X / abs(X).max(axis = 0)
 
+# X, y = load('./data/train.csv')

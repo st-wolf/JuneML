@@ -1,11 +1,10 @@
-import numpy as np
 import matplotlib.pyplot as plt
 
 def decision_boundary(param, *args):
 	# Рисует проекцию разделяющей поверхности на плоскость двух параметров
 	pass
 
-def classes(x1, x2, y, names = []):
+def show_classes(x1, x2, y, names = []):
 	# Рисует классы на плоскости двух параметров
 
 	# Цветовая схема от Andrew Ng
@@ -19,9 +18,3 @@ def classes(x1, x2, y, names = []):
 
 	plt.grid()
 	plt.show()
-
-# Это нужно оформить в видет тестов
-# x1 = np.array([1,2,3,4])
-# x2 = np.array([2,3,1,4])
-# y  = np.array([1,0,0,1])
-# classes(x1, x2, y, names = ['feature1', 'feature2'])

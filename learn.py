@@ -1,6 +1,6 @@
 import numpy as np
 
-from optimize import GD
+from optimize import gradien_descent
 
 """
 Матрица объекты - признаки хранится в ndarray и имеет вид:
@@ -15,11 +15,18 @@ def sigmoid(x):
 	return 1 / (1 + np.exp(-x))
 
 def cost(param, X, y, rate = 0):
-	# Функция стоимости
-	# :param: параметры обучаемой модели
-	# :X:     матрциа объекты - признаки
-	# :y:     вектор ответов
-	# :rate:  степень регуляризации
+	"""
+	Вычисление функции стоимости
+
+	Args:
+		param (ndarray): параметры обучаемой модели
+		X (ndarray): матрица объекты - признаки
+		y (ndarray): вектор ответов
+		rate: степень регуляризации
+
+	Return:
+		float: значение функции стоимости
+	"""
 
 	m = len(y)
 	return (1 / m) * (
@@ -28,33 +35,54 @@ def cost(param, X, y, rate = 0):
 		(rate / (2*m)) * np.dot(param[1:], param[1:]) )
 
 def grad(param, X, y, rate = 0):
-	# Градиет функции стоимости
-	# :param: параметры обучаемой модели
-	# :X:     матрица объекты - признаки
-	# :y:     вектор ответов
-	# :rate:  степень регуляризации
+	"""
+	Градиет функции стоимости
+
+	Args:
+		param (ndarray): параметры обучаемой модели
+		X (ndarray): матрица объекты - признаки
+		y (ndarray): вектор ответов
+		rate: степень регуляризации
+
+	Return:
+		ndarray: вектор градиента функции стоимости
+	"""
 
 	m = len(y)
 	return (1 / m) * np.dot(sigmoid(np.dot(X, param)), X) + (
 		(rate / m) * np.hstack((0, param[1:])) )
 
 def teach(X, y):
-	# Обучение параметром модели
-	# :X: матрица объекты - признаки
-	# :y: вектор ответов
+	"""
+	Обучение параметром модели
+
+	Args:
+		X (ndarray): матрица объекты - признаки
+		y (ndarray): вектор ответов
+
+	Reutrns:
+		ndarray: оптимальынй вектор параметров модели
+	"""
 
 	# Степень регуляризации
 	rate = 0
-	return GD(
+	return gradien_descent(
 		lambda param: cost(param, X, y, rate),
 		lambda param: grad(param, X, y, rate),
 		np.zeros(X.shape[1])
 		)
 
 def classify(param, X):
-	# Принятие решения о принадлежности
-	# :param: параметры обучаемой модели
-	# :X:     матрица объекты - признаки (может быть вектором)
+	"""
+	Принятие решения о принадлежности
+	
+	Args:
+		param: параметры обучаемой модели
+		X (ndarray): матрица объекты - признаки
+
+	Reutrns:
+		Bool: принадлежность классу (True: 1, False: 0)
+	"""
 
 	return (np.dot(X, param) >= 0)
 

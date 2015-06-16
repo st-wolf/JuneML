@@ -1,6 +1,8 @@
 # Тут лежит куча алгоритмов минимизации
 # from scipy.optimize import minimize
 
+from numpy.linalg import norm
+
 # Осваиваю Google Code Style for Python
 
 def gradien_descent(f, grad, x0, maxiter = 100):
@@ -27,7 +29,7 @@ def gradien_descent(f, grad, x0, maxiter = 100):
 	while (n < maxiter) if (maxiter >= 0) else True:
 		n += 1
 		x = xmin - alpha * grad(xmin)
-		if abs(x - xmin) < xtol:
+		if norm(x - xmin) < xtol:
 			return x
 		elif f(x) >= fmin:
 			alpha /= 2

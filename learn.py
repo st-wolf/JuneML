@@ -12,7 +12,16 @@ X = 1 .. ..
 """
 
 def sigmoid(x):
+	"""
+	Сигмоид-функция
+	"""
 	return 1 / (1 + np.exp(-x))
+
+def hypothesis(theta, x):
+	"""
+	Функция гипотезы логистической регрессии
+	"""
+	return sigmoid(np.dot(np.transpose(theta), x))
 
 def cost(param, X, y, rate = 0):
 	"""
@@ -34,13 +43,13 @@ def cost(param, X, y, rate = 0):
 		np.dot(-(1 - y), np.log(1 - sigmoid(np.dot(X, param)))) ) + (
 		(rate / (2*m)) * np.dot(param[1:], param[1:]) )
 
-def grad(param, X, y, rate = 0):
+def grad(param, x, y, rate = 0):
 	"""
-	Градиет функции стоимости
+	Градиент функции стоимости
 
 	Args:
 		param (ndarray): параметры обучаемой модели
-		X (ndarray): матрица объекты - признаки
+		x (ndarray): матрица объекты - признаки
 		y (ndarray): вектор ответов
 		rate: степень регуляризации
 
@@ -49,14 +58,19 @@ def grad(param, X, y, rate = 0):
 	"""
 
 	m = len(y)
-	return (1 / m) * np.dot(sigmoid(np.dot(X, param)), X) + (
-		(rate / m) * np.hstack((0, param[1:])) )
+
+
+	print (hypothesis(param, x))
+	# return (1/m) * hypothesis(param, x)
+	# (1 / m) * np.dot(sigmoid(np.dot(X, param)), X) 
+	# + (	(rate / m) * np.hstack((0, param[1:])) )
 
 def teach(X, y):
 	"""
 	Обучение параметром модели
 
 	Args:
+		param (ndarray): параметры обучаемой модели
 		X (ndarray): матрица объекты - признаки
 		y (ndarray): вектор ответов
 
@@ -66,11 +80,18 @@ def teach(X, y):
 
 	# Степень регуляризации
 	rate = 0
-	return gradien_descent(
-		lambda param: cost(param, X, y, rate),
-		lambda param: grad(param, X, y, rate),
-		np.zeros(X.shape[1])
-		)
+
+	fi = lambda param: grad(param, X, y, rate)
+
+	print(fi(124))
+
+
+
+	# return gradien_descent(
+	# 	lambda param: cost(param, X, y, rate),
+	# 	lambda param: grad(param, X, y, rate),
+	# 	np.zeros(X.shape[1])
+	# )
 
 def classify(param, X):
 	"""

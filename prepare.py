@@ -139,7 +139,12 @@ def parse_data(data):
         
 def normalize(x):
     # Нормализаця. Значения всех признаков переводятся в диапазон [-1,1]
-    return x / np.amax(abs(x), axis = 0)
+    # добавляется столбец с единицами
+    x_norm = x / np.amax(abs(x), axis = 0)
+    features_len = x_norm.shape[0]
+    x_norm = np.c_[ np.ones(features_len), x_norm  ]
+    
+    return x_norm
 
 
 """

@@ -9,6 +9,7 @@ TEST_FOLDER_NAME='tests'
 
 for test_file in ./${TEST_FOLDER_NAME}/*.py;
 do
-	# echo ${TEST_FOLDER_NAME}/"${test_file##*/}"
+	
+	echo ${TEST_FOLDER_NAME}/"${test_file##*/}"
 	python3 -m unittest ${TEST_FOLDER_NAME}/"${test_file##*/}"
 done

@@ -38,22 +38,17 @@ def cost(theta, x, y, rate = 0):
 		float: значение функции стоимости
 	"""
 
-	m = len(y)
+	m = y.shape[0]
 
 	# Костыль
 	cost = 0
+
 	for iter in range(0, m - 1):
-		cost += -y[iter] * np.log(hypothesis(theta[iter], x[iter])) - ( 1 - y[iter] ) * np.log(1 - hypothesis(theta[iter], x[iter]))
+		cost += -1 * y[iter] * np.log(hypothesis(theta, x[iter, :])) - ( 1 - y[iter] ) * np.log(1 - hypothesis(theta, x[iter, :]))
 
+	cost = cost / m
 
-	return cost / m
-		# + ( ( rate / (2*m)) * np.dot(theta[1:], theta[1:]) )
-
-
-	# return (1 / m) * (
-	# 	np.dot( -y, np.log( hypothesis( theta, x ) ) ) + 
-	# 	np.dot( -(1 - y), np.log( 1 - hypothesis( theta, x ) ) ) ) 
-
+	return cost
 
 def grad(theta, x, y, rate = 0):
 	"""
@@ -69,19 +64,14 @@ def grad(theta, x, y, rate = 0):
 		ndarray: вектор градиента функции стоимости
 	"""
 
-	m = len(y)
+	m = y.shape[0]
 
 	# Костыль
 	grad = 0
 	for iter in range(0, m - 1):
-		grad += (hypothesis(theta[iter], x[iter]) - y[iter]) * x[iter]
+		grad += np.dot((hypothesis(theta, x[iter, :]) - y[iter]), x[iter, :])
 
 	return  grad / m
-			# (1 / m) * np.dot( hypothesis(theta, x) - y, x)
-
-
-			# (1 / m) * np.dot(sigmoid(np.dot(X, param)), X) 
-			# + (	(rate / m) * np.hstack((0, param[1:])) )
 
 
 def teach(x, y, x0):
@@ -103,7 +93,9 @@ def teach(x, y, x0):
 	return gradien_descent(
 		lambda param: cost(param, x, y, rate),
 		lambda param: grad(param, x, y, rate),
-		x0
+		x0,
+		1e-5,
+		-1
 	)
 
 
@@ -117,7 +109,7 @@ def classify(param, X):
 		param: параметры обучаемой модели
 		X (ndarray): матрица объекты - признаки
 
-	Reutrns:
+	Returns:
 		Bool: принадлежность классу (True: 1, False: 0)
 	"""
 

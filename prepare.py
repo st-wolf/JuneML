@@ -68,10 +68,17 @@ def load_training_answers(file_name, path_dir = 'data', relative = True):
 
         data = []
 
+
+
         IS_SURVIVED = 1 # костыль
+        AGE = 5 # костыль
 
         for row in raw_data:
-            data.append(row[IS_SURVIVED])
+            # костыль для отсутствующего в датасете возраста
+            if row[AGE] == "":
+                continue
+
+            data.append(int(row[IS_SURVIVED]))
 
     return np.array(data)
 
@@ -153,15 +160,3 @@ Feature Matrix будем хранить в формате ndarray из библ
 Значит нужно аккуратно распарсить csv и положить данные в ndarray.
 Все числовые признаки пока примем как есть, остальным присвоим числовые значения.
 """
-
-
-# data = load_data_set('train.csv')
-# answers = load_training_answers('train.csv')
-# f_matrix = parse_data(data)
-# f_n_matrix = normalize(f_matrix)
-
-
-# # Делаем вывод нормальным
-# np.set_printoptions(threshold=np.nan) # вывод всей матрицы
-# np.set_printoptions(suppress=True) # человеко-понятные цифры
-# print(f_n_matrix)

@@ -37,5 +37,6 @@ class TestOptimize(TestCase):
 
 	def test_gradient_descent(self):
 		for f in self.functions:
-			xmin = gradien_descent(f["func"], f["grad"], f["init"], maxiter = 200)
-			self.assertFalse(norm(xmin - f["xmin"]) > f["xtol"])
+			xmin = gradien_descent(f["func"], f["grad"], f["init"], f["xtol"])
+			print(norm(xmin - f["xmin"]))
+			self.assertTrue(norm(xmin - f["xmin"]) < f["xtol"])

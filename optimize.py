@@ -5,14 +5,15 @@ from numpy.linalg import norm
 
 # Осваиваю Google Code Style for Python
 
-def gradien_descent(f, grad, x0, maxiter = 100):
+def gradien_descent(f, grad, x0, xtol = 1e-5, maxiter = 100):
 	""" 
 	Метод градиентного спуска
-
+ 
 	Args:
 		f: Функция одного аргумента типа ndarray
 		grad: Градиент функции f
 		x0 (ndarray): Начальные условия градиентного спуска
+		xtol : Критерий останова по точности
 		maxiter (int): Максимальное количество итераций метода градиентного спуска.
 			Значение -1 - без ограничений
 
@@ -20,8 +21,7 @@ def gradien_descent(f, grad, x0, maxiter = 100):
 		ndarray: результат градиентного спуска
 	"""
 
-	xtol = 1e-10 # Критерий останова по точности
-	alpha = 1 # Скорость спуска
+	alpha = 100
 	xmin = x0
 	fmin = f(xmin)
 	n = 0 
@@ -29,6 +29,7 @@ def gradien_descent(f, grad, x0, maxiter = 100):
 	while (n < maxiter) if (maxiter >= 0) else True:
 		n += 1
 		x = xmin - alpha * grad(xmin)
+		print(norm(x - xmin), n)
 		if norm(x - xmin) < xtol:
 			return x
 		elif f(x) >= fmin:
@@ -36,7 +37,8 @@ def gradien_descent(f, grad, x0, maxiter = 100):
 		else:
 			xmin = x
 	
-	print("Required accuracy is not achieved: x - xmin = %f\n" % (x - xmin))
+
+	print("Required accuracy is not achieved")
 	return xmin
 
 # Надо разбираться

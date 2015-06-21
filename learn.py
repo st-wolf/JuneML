@@ -12,14 +12,24 @@ X = 1 .. ..
 """
 
 def sigmoid(x):
+	"""
+	Сигмоид-функция
+	"""
 	return 1 / (1 + np.exp(-x))
 
-def cost(param, X, y, rate = 0):
+def hypothesis(theta, x):
+	"""
+	Функция гипотезы логистической регрессии
+	"""
+	return sigmoid(np.dot(np.transpose(theta), x))
+
+
+def cost(theta, x, y, rate = 0):
 	"""
 	Вычисление функции стоимости
 
 	Args:
-		param (ndarray): параметры обучаемой модели
+		theta (ndarray): параметры обучаемой модели
 		X (ndarray): матрица объекты - признаки
 		y (ndarray): вектор ответов
 		rate: степень регуляризации
@@ -28,19 +38,25 @@ def cost(param, X, y, rate = 0):
 		float: значение функции стоимости
 	"""
 
-	m = len(y)
-	return (1 / m) * (
-		np.dot(-y, np.log(sigmoid(np.dot(X, param)))) + 
-		np.dot(-(1 - y), np.log(1 - sigmoid(np.dot(X, param)))) ) + (
-		(rate / (2*m)) * np.dot(param[1:], param[1:]) )
+	m = y.shape[0]
 
-def grad(param, X, y, rate = 0):
+	# Костыль
+	cost = 0
+
+	for iter in range(0, m - 1):
+		cost += -1 * y[iter] * np.log(hypothesis(theta, x[iter, :])) - ( 1 - y[iter] ) * np.log(1 - hypothesis(theta, x[iter, :]))
+
+	cost = cost / m
+
+	return cost
+
+def grad(theta, x, y, rate = 0):
 	"""
-	Градиет функции стоимости
+	Градиент функции стоимости
 
 	Args:
-		param (ndarray): параметры обучаемой модели
-		X (ndarray): матрица объекты - признаки
+		theta (ndarray): параметры обучаемой модели
+		x (ndarray): матрица объекты - признаки
 		y (ndarray): вектор ответов
 		rate: степень регуляризации
 
@@ -48,29 +64,42 @@ def grad(param, X, y, rate = 0):
 		ndarray: вектор градиента функции стоимости
 	"""
 
-	m = len(y)
-	return (1 / m) * np.dot(sigmoid(np.dot(X, param)), X) + (
-		(rate / m) * np.hstack((0, param[1:])) )
+	m = y.shape[0]
 
-def teach(X, y):
+	# Костыль
+	grad = 0
+	for iter in range(0, m - 1):
+		grad += np.dot((hypothesis(theta, x[iter, :]) - y[iter]), x[iter, :])
+
+	return  grad / m
+
+
+def teach(x, y, x0):
 	"""
 	Обучение параметром модели
 
 	Args:
-		X (ndarray): матрица объекты - признаки
+		param (ndarray): параметры обучаемой модели
+		x (ndarray): матрица объекты - признаки
 		y (ndarray): вектор ответов
 
-	Reutrns:
-		ndarray: оптимальынй вектор параметров модели
+	Reuturns:
+		ndarray: оптимальный вектор параметров модели
 	"""
 
 	# Степень регуляризации
 	rate = 0
+
 	return gradien_descent(
-		lambda param: cost(param, X, y, rate),
-		lambda param: grad(param, X, y, rate),
-		np.zeros(X.shape[1])
-		)
+		lambda param: cost(param, x, y, rate),
+		lambda param: grad(param, x, y, rate),
+		x0,
+		1e-5,
+		-1
+	)
+
+
+
 
 def classify(param, X):
 	"""
@@ -80,7 +109,7 @@ def classify(param, X):
 		param: параметры обучаемой модели
 		X (ndarray): матрица объекты - признаки
 
-	Reutrns:
+	Returns:
 		Bool: принадлежность классу (True: 1, False: 0)
 	"""
 

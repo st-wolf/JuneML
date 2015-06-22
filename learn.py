@@ -91,8 +91,8 @@ def teach(x, y, x0):
 	rate = 0
 
 	return gradien_descent(
-		lambda param: cost(param, x, y, rate),
-		lambda param: grad(param, x, y, rate),
+		lambda theta: cost(theta, x, y, rate),
+		lambda theta: grad(theta, x, y, rate),
 		x0,
 		1e-5,
 		-1
@@ -101,19 +101,22 @@ def teach(x, y, x0):
 
 
 
-def classify(param, X):
+def classify(param, x):
+
+	print(param)
+	print(x)
 	"""
 	Принятие решения о принадлежности
 	
 	Args:
 		param: параметры обучаемой модели
-		X (ndarray): матрица объекты - признаки
+		x (ndarray): матрица объекты - признаки
 
 	Returns:
 		Bool: принадлежность классу (True: 1, False: 0)
 	"""
 
-	return (np.dot(X, param) >= 0)
+	return (np.dot(x, param) >= 0)
 
 class LRclassifier:
 	# TODO: перенести обучение в конструктор, добавить метод classify

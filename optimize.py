@@ -21,7 +21,7 @@ def gradien_descent(f, grad, x0, xtol = 1e-5, maxiter = 100):
 		ndarray: результат градиентного спуска
 	"""
 
-	alpha = 100
+	alpha = 10
 	xmin = x0
 	fmin = f(xmin)
 	n = 0 
@@ -41,5 +41,6 @@ def gradien_descent(f, grad, x0, xtol = 1e-5, maxiter = 100):
 	print("Required accuracy is not achieved")
 	return xmin
 
-# Надо разбираться
-# def stochastic_gradient(...):
+
+
+

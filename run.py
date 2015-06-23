@@ -9,8 +9,8 @@ test_data = normalize(test_data)
 x0 = test_data[1, :]
 optim_feature_m = teach(test_data, test_answers, x0)
 theta = np.array(optim_feature_m)
-print(optim_feature_m)
 
+# Тета из градинтного спуска
 # theta = np.array([ 4.88031677, -3.65326592, -2.51913162, -2.52432301, -1.80838042])
 
 classified_data = classify(theta, test_data)

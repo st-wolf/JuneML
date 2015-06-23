@@ -1,6 +1,6 @@
 import numpy as np
 
-from optimize import gradien_descent
+from optimize import *
 
 """
 Матрица объекты - признаки хранится в ndarray и имеет вид:
@@ -15,13 +15,14 @@ def sigmoid(x):
 	"""
 	Сигмоид-функция
 	"""
+
 	return 1 / (1 + np.exp(-x))
 
 def hypothesis(theta, x):
 	"""
 	Функция гипотезы логистической регрессии
 	"""
-	return sigmoid(np.dot(np.transpose(theta), x))
+	return sigmoid(np.dot(theta, x))
 
 
 def cost(theta, x, y, rate = 0):
@@ -44,7 +45,12 @@ def cost(theta, x, y, rate = 0):
 	cost = 0
 
 	for iter in range(0, m - 1):
-		cost += -1 * y[iter] * np.log(hypothesis(theta, x[iter, :])) - ( 1 - y[iter] ) * np.log(1 - hypothesis(theta, x[iter, :]))
+		if (y[iter] == 0) and (1 - hypothesis(theta, x[iter, :]) > 0):
+			-np.log(1 - hypothesis(theta, x[iter, :]))
+		else:
+			cost += -np.log(hypothesis(theta, x[iter, :]))
+
+		# cost += -1 * y[iter] * np.log(hypothesis(theta, x[iter, :])) - ( 1 - y[iter] ) * np.log(1 - hypothesis(theta, x[iter, :]))
 
 	cost = cost / m
 
@@ -90,21 +96,22 @@ def teach(x, y, x0):
 	# Степень регуляризации
 	rate = 0
 
-	return gradien_descent(
+	return newtons_method (
 		lambda theta: cost(theta, x, y, rate),
 		lambda theta: grad(theta, x, y, rate),
 		x0,
-		1e-5,
-		-1
+		1e-5
 	)
-
-
-
+	
+	# return gradien_descent(
+	# 	lambda theta: cost(theta, x, y, rate),
+	# 	lambda theta: grad(theta, x, y, rate),
+	# 	x0,
+	# 	1e-5,
+	# 	-1
+	# )
 
 def classify(param, x):
-
-	print(param)
-	print(x)
 	"""
 	Принятие решения о принадлежности
 	

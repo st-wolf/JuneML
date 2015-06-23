@@ -3,6 +3,29 @@
 
 from numpy.linalg import norm
 
+def newtons_method(func, grad, x0, xtol = 1e-5):
+	'''
+	Метод Ньютона
+
+	Args:
+		func: Функция одного аргумента типа ndarray
+		grad: Градиент функции f
+		x0 (ndarray): Начальные условия градиентного спуска
+		xtol : Критерий останова по точности
+
+	Returns:
+		ndarray: результат градиентного спуска
+	'''
+
+	x_new = x0
+
+	while abs(func(x_new)) >= xtol:
+		x_old = x_new
+		x_new = x_old - func(x_old)/grad(x_old)
+
+	return x_new
+
+
 # Осваиваю Google Code Style for Python
 
 def gradien_descent(f, grad, x0, xtol = 1e-5, maxiter = 100):

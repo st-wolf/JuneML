@@ -4,7 +4,7 @@
 from numpy.linalg import norm
 
 def newtons_method(func, grad, x0, xtol = 1e-5):
-	'''
+	"""
 	Метод Ньютона
 
 	Args:
@@ -15,7 +15,7 @@ def newtons_method(func, grad, x0, xtol = 1e-5):
 
 	Returns:
 		ndarray: результат градиентного спуска
-	'''
+	"""
 
 	x_new = x0
 

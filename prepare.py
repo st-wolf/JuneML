@@ -4,9 +4,9 @@ import os
 
 from collections import namedtuple
 
-'''
+"""
 Именованный кортеж с признаками
-'''
+"""
 Row = namedtuple(
     'Row', 
     [
@@ -24,9 +24,9 @@ Row = namedtuple(
     ]
 )
 
-'''
+"""
 Используемые признаки
-'''
+"""
 FEATURES = [
     'pclass',
     'sex',
@@ -38,11 +38,15 @@ def load_data_set(data_file_name, answers_file_name, path_dir = 'data', relative
     """
     Читает данные из csv
     Возвращает ndarray с разобранными данными
-    @param :data_file_name: имя файла с данными
-    @param :answers_file_name: имя файла с ответами
-    @param :path_dir: путь с файлом (по умолчанию берется из папки data)
-    @param :relative: абсолютный ли относительный путь передан в path_dir?
-    @return (np.array, np.array) Матрицу параметров, Вектор ответов
+
+    Args:
+        data_file_name: имя файла с данными
+        answers_file_name: имя файла с ответами
+        path_dir: путь с файлом (по умолчанию берется из папки data)
+        relative: абсолютный ли относительный путь передан в path_dir?
+    
+    Returns:
+        (np.array, np.array): матрица признаков, вектор ответов
     """
 
     # Определяем абсолютный путь к файлу
@@ -86,25 +90,32 @@ def load_data_set(data_file_name, answers_file_name, path_dir = 'data', relative
 
 
 def check_data_consist(data):
-    '''
+    """
     Проверяем целостность входных данных
-    @data namedtuple - данные для проверки
-    @return Bool
-    '''
+
+    Args:
+        data (namedtuple): данные для проверки
+
+    Reutrns:
+        Bool: True - данные в полном порядке
+    """
 
     # Конвертируем в словарь для доступа к индексам
     data = data._asdict()
-    for feature in FEATURES:
-        if (feature in data) and (data[feature] == ''):
-            return False
-    return True
+    return all( [(feature in data) and (data[feature] != '')
+        for feature in FEATURES] )
 
 
 def convert_data_to_vector(data):
-    """ Превращает человеко-понятные данные во вектор значений параметров
-    Пока работаем только с подмножеством (pclass, sex, age, fare)
-    @param np_array data разобранные в load_training_set данные
-    @return numpy.array 
+    """ 
+    Превращает человеко-понятные данные во вектор значений параметров
+    Работаем только с подмножеством FEATURES
+
+    Args:
+        data: разобранные в load_training_set данные
+
+    Reutrns:
+        ndarray: вектор для матрицы признаков 
     """
     vector_data = []
 
@@ -123,11 +134,24 @@ def convert_data_to_vector(data):
 
         
 def normalize(data):
-    '''Нормализаця. Значения всех признаков переводятся в диапазон [-1,1]
-       добавляется столбец с единицами'''
-    data_norm = data / np.amax(abs(data), axis = 0)
+    """
+    Нормализаця. Значения всех признаков переводятся в диапазон [-1,1].
+    Добавляется столбец с единицами
+
+    Args:
+        data (ndarray): матрица признаков
+
+    Returns:
+        ndarray: нормализованная матрица признаков
+    """
+
+    data_norm = data / np.max(abs(data), axis = 0)
     features_len = data_norm.shape[0]
-    data_norm = np.c_[ np.ones(features_len), data_norm  ]
+    
+    # Прикольно, раньше я делал так:
+    # data_norm = np.hstack((np.ones((features_len, 1)), data_norm))
+
+    data_norm = np.c_[ np.ones(features_len), data_norm ]
     
     return data_norm
 

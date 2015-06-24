@@ -18,75 +18,34 @@ def sigmoid(x):
 
 	return 1 / (1 + np.exp(-x))
 
-def hypothesis(theta, x):
+
+def cost(param, X, y, rate = 0):
 	"""
-	Функция гипотезы логистической регрессии
-	"""
-	return sigmoid(np.dot(theta, x))
-
-
-def cost(theta, x, y, rate = 0):
-	"""
-	Вычисление функции стоимости
-
-	Args:
-		theta (ndarray): параметры обучаемой модели
-		X (ndarray): матрица объекты - признаки
-		y (ndarray): вектор ответов
-		rate: степень регуляризации
-
-	Return:
-		float: значение функции стоимости
+	Векторизованная функция стоимости
 	"""
 
-	m = y.shape[0]
+	m = y.size
+	return (1 / m) * (
+		np.dot(-y, np.log(sigmoid(np.dot(X, param)))) + 
+		np.dot(-(1 - y), np.log(1 - sigmoid(np.dot(X, param)))) ) + (
+		(rate / (2*m)) * np.dot(param[1:], param[1:]) )
 
-	# Костыль
-	cost = 0
-
-	for iter in range(0, m - 1):
-		if (y[iter] == 0) and (1 - hypothesis(theta, x[iter, :]) > 0):
-			-np.log(1 - hypothesis(theta, x[iter, :]))
-		else:
-			cost += -np.log(hypothesis(theta, x[iter, :]))
-
-		# cost += -1 * y[iter] * np.log(hypothesis(theta, x[iter, :])) - ( 1 - y[iter] ) * np.log(1 - hypothesis(theta, x[iter, :]))
-
-	cost = cost / m
-
-	return cost
-
-def grad(theta, x, y, rate = 0):
+def grad(param, X, y, rate = 0):
 	"""
-	Градиент функции стоимости
-
-	Args:
-		theta (ndarray): параметры обучаемой модели
-		x (ndarray): матрица объекты - признаки
-		y (ndarray): вектор ответов
-		rate: степень регуляризации
-
-	Return:
-		ndarray: вектор градиента функции стоимости
+	Векторизованный градиет функции стоимости
 	"""
 
-	m = y.shape[0]
+	m = y.size
+	return (1 / m) * np.dot(sigmoid(np.dot(X, param)), X) + (
+		(rate / m) * np.hstack((0, param[1:])) )
 
-	# Костыль
-	grad = 0
-	for iter in range(0, m - 1):
-		grad += np.dot((hypothesis(theta, x[iter, :]) - y[iter]), x[iter, :])
-
-	return  grad / m
-
-
-def teach(x, y, x0):
+def teach(X, y):
 	"""
-	Обучение параметром модели
+	Обучение параметров модели
 
 	Args:
 		param (ndarray): параметры обучаемой модели
-		x (ndarray): матрица объекты - признаки
+		X (ndarray): матрица объекты - признаки
 		y (ndarray): вектор ответов
 
 	Reuturns:
@@ -95,35 +54,28 @@ def teach(x, y, x0):
 
 	# Степень регуляризации
 	rate = 0
-
-	return newtons_method (
-		lambda theta: cost(theta, x, y, rate),
-		lambda theta: grad(theta, x, y, rate),
-		x0,
-		1e-5
-	)
 	
-	# return gradien_descent(
-	# 	lambda theta: cost(theta, x, y, rate),
-	# 	lambda theta: grad(theta, x, y, rate),
-	# 	x0,
-	# 	1e-5,
-	# 	-1
-	# )
+	param_init = np.zeros(param.size)
+	return gradien_descent(
+		lambda param: cost(param, X, y, rate),
+		lambda param: grad(param, X, y, rate),
+		param_init,
+		1e-5,
+		-1 )
 
-def classify(param, x):
+def classify(param, X):
 	"""
 	Принятие решения о принадлежности
 	
 	Args:
 		param: параметры обучаемой модели
-		x (ndarray): матрица объекты - признаки
+		X (ndarray): матрица объекты - признаки
 
 	Returns:
 		Bool: принадлежность классу (True: 1, False: 0)
 	"""
 
-	return (np.dot(x, param) >= 0)
+	return (np.dot(X, param) >= 0)
 
 class LRclassifier:
 	# TODO: перенести обучение в конструктор, добавить метод classify

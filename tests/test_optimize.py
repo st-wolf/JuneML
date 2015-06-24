@@ -30,13 +30,13 @@ class TestOptimize(TestCase):
 			"grad": lambda x: 2*x / (np.cos(x ** 2) ** 2),
 			"init": np.pi / 4,
 			"xmin": 0,
-			"xtol": 1e-6
+			"xtol": 1e-4
 		}
 
 		self.functions = [f_quad, f_3d_quad, f_tan_of_squared]
 
 	def test_gradient_descent(self):
 		for f in self.functions:
-			xmin = gradien_descent(f["func"], f["grad"], f["init"], f["xtol"])
+			xmin = gradien_descent(f["func"], f["grad"], f["init"], maxiter = 200)
 			print(norm(xmin - f["xmin"]))
 			self.assertTrue(norm(xmin - f["xmin"]) < f["xtol"])

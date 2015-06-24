@@ -55,13 +55,12 @@ def teach(X, y):
 	# Степень регуляризации
 	rate = 0
 	
-	param_init = np.zeros(param.size)
+	param_init = np.zeros(X.shape[1])
 	return gradien_descent(
 		lambda param: cost(param, X, y, rate),
 		lambda param: grad(param, X, y, rate),
 		param_init,
-		1e-5,
-		-1 )
+		maxiter = 10000 )
 
 def classify(param, X):
 	"""

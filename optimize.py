@@ -43,7 +43,7 @@ def gradien_descent(f, grad, x0, xtol = 1e-10, maxiter = 200):
 		ndarray: результат градиентного спуска
 	"""
 
-	alpha = 1
+	alpha = 100
 	xmin = x0
 	fmin = f(xmin)
 	n = 0 

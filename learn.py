@@ -36,7 +36,7 @@ def grad(param, X, y, rate = 0):
 	"""
 
 	m = y.size
-	return (1 / m) * np.dot(sigmoid(np.dot(X, param)), X) + (
+	return (1 / m) * np.dot(sigmoid(np.dot(X, param)) - y, X) + (
 		(rate / m) * np.hstack((0, param[1:])) )
 
 def teach(X, y):

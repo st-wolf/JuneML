@@ -3,7 +3,7 @@
 
 from numpy.linalg import norm
 
-def newtons_method(func, grad, x0, xtol = 1e-5):
+def newtons_method(func, grad, x0, xtol = 1e-10, maxiter = 200):
 	"""
 	Метод Ньютона
 
@@ -14,17 +14,10 @@ def newtons_method(func, grad, x0, xtol = 1e-5):
 		xtol : Критерий останова по точности
 
 	Returns:
-		ndarray: результат градиентного спуска
+		ndarray: результат ньютоновской оптимизации
 	"""
 
-	x_new = x0
-
-	while abs(func(x_new)) >= xtol:
-		x_old = x_new
-		x_new = x_old - func(x_old)/grad(x_old)
-
-	return x_new
-
+	pass
 
 # Осваиваю Google Code Style for Python
 
@@ -48,7 +41,7 @@ def gradien_descent(f, grad, x0, xtol = 1e-10, maxiter = 200):
 	fmin = f(xmin)
 	n = 0 
 
-	while (n < maxiter):
+	while n < maxiter:
 		n += 1
 		x = xmin - alpha * grad(xmin)
 

@@ -60,10 +60,10 @@ def teach(X, y):
 		lambda param: cost(param, X, y, rate),
 		lambda param: grad(param, X, y, rate),
 		param_init,
-		maxiter = 10000 )
+		maxiter = 5000 )
 
-def classify(param, X):
-	"""
+def classify(param, X):	
+	"""	
 	Принятие решения о принадлежности
 	
 	Args:

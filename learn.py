@@ -56,11 +56,13 @@ def teach(X, y):
 	rate = 0
 	
 	param_init = np.zeros(X.shape[1])
-	return gradien_descent(
+	param, _ = gradien_descent(
 		lambda param: cost(param, X, y, rate),
 		lambda param: grad(param, X, y, rate),
 		param_init,
 		maxiter = 5000 )
+
+	return param
 
 def classify(param, X):	
 	"""	

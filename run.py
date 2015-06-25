@@ -16,29 +16,36 @@ n_learn = 2 * (n // 3)
 n_check = n - n_learn
 
 def get_param():
-	param = teach(data[:n_learn, :], answers[:n_learn])
-	return param
+	# param = teach(data[:, :], answers[:])
+	learning_curve(data, answers)
 
+	# return param
+
+
+get_param()
 # print(get_param())
 
-# Joseph: 10000 итераций градиентного спуска:
-# 	param = [4.66641156, -3.40293505, -2.54710512, -2.48068236, -1.57692318]
+# Joseph: 5000 итераций градиентного спуска:
+# 	param = [4.98803499, -3.80921867, -2.51819642, -2.93658204, 0.27530952]
 # Luci: хрен знает как:
 # 	param = [4.88031677, -3.65326592, -2.51913162, -2.52432301, -1.80838042]
 
 def count_error():
-	# param = [4.66641156, -3.40293505, -2.54710512, -2.48068236, -1.57692318]
-	param = get_param()
-	classified = classify(param, data[:n_learn, :])
+	param = [4.98803499, -3.80921867, -2.51819642, -2.93658204, 0.27530952]
+	# param = get_param()
+	print(param)
+	classified = classify(param, data[n_learn:, :])
 
 	n_error = 0
-	for forcast, answer in zip(classified, answers[:n_learn]):
+	for forcast, answer in zip(classified, answers[n_learn:]):
 		if forcast != answer:
 			n_error += 1
 
 	# На первых 2-х тертях (по ним обучали): 80.46
 	# На последней трети (по которой не обучали): 79.83
-	print(1 - n_error / n_learn)
+	print(1 - n_error / n_check)
+
+# count_error()
 
 # Костылищщи! 
 # Не думай об этом, лучше я объясню тебе, в чем проблема 
@@ -87,8 +94,7 @@ def vizualize():
 	x_range = (0,1)
 	y_range = (-0.2, 1.2)
 
-
 	show_classes(data[:, 3], data[:, 4], answers, names)
 	# decision_boundary(param, f_numbers, x_range, y_range, names)
 
-vizualize()
+

@@ -33,12 +33,15 @@ def gradien_descent(f, grad, x0, xtol = 1e-10, maxiter = 200):
 		maxiter (int): Максимальное количество итераций метода градиентного спуска.
 
 	Returns:
-		ndarray: результат градиентного спуска
+		(ndarray, ndarray): результат градиентного спуска, массив значений f на итерациях
 	"""
 
 	alpha = 100
 	xmin = x0
 	fmin = f(xmin)
+
+	fvalues = [fmin]
+
 	n = 0 
 
 	while n < maxiter:
@@ -47,14 +50,16 @@ def gradien_descent(f, grad, x0, xtol = 1e-10, maxiter = 200):
 
 		dx = norm(x - xmin)
 		if dx < xtol:
-			return x
+			return (x, fvalues)
 		elif f(x) >= fmin:
 			alpha /= 2
 		else:
 			xmin = x
+			fmin = f(x)
+			fvalues.append(fmin)
 	
 	print("Gradiend descent: dx = %.15f after %i iterations" % (dx, maxiter))
-	return xmin
+	return (xmin, fvalues)
 
 
 

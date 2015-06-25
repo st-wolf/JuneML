@@ -3,6 +3,7 @@ import csv
 from prepare import *
 from view import *
 from learn import *
+from view import *
 
 # Разделим выборку на трети
 # Обучим по 2/3, проверим по 1/3
@@ -78,4 +79,16 @@ def process_test():
 		for pass_id, forcast in zip(ids, classified):
 			answers_writer.writerow([pass_id, int(forcast)])
 
-process_test()
+def vizualize():
+	# 1 - pclass, 2 - sex, 3 - age, 4 - fare
+	param = np.array([4.66641156, -3.40293505, -2.54710512, -2.48068236, -1.57692318])
+	f_numbers = (1, 4)
+	names = ["age", "fare"]
+	x_range = (0,1)
+	y_range = (-0.2, 1.2)
+
+
+	show_classes(data[:, 3], data[:, 4], answers, names)
+	# decision_boundary(param, f_numbers, x_range, y_range, names)
+
+vizualize()

@@ -55,9 +55,9 @@ def decision_boundary(param, f_numbers, x_range, y_range, names = []):
 	f_matrix[:, ix] = x_unroll
 	f_matrix[:, iy] = y_unroll
 
-	hypotheses = np.dot(f_matrix, param)
+	hypothesis = np.dot(f_matrix, param)
 
-	Z = hypotheses.reshape((n_x, n_y))
+	Z = hypothesis.reshape((n_x, n_y))
 
 	plt.contour(X, Y, Z, levels = [0])
 

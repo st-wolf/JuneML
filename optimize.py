@@ -19,8 +19,6 @@ def newtons_method(func, grad, x0, xtol = 1e-10, maxiter = 200):
 
 	pass
 
-# Осваиваю Google Code Style for Python
-
 def gradien_descent(f, grad, x0, xtol = 1e-10, maxiter = 200):
 	""" 
 	Метод градиентного спуска
@@ -44,22 +42,25 @@ def gradien_descent(f, grad, x0, xtol = 1e-10, maxiter = 200):
 
 	n = 0 
 
-	while n < maxiter:
+	while (n < maxiter) or (maxiter < 0):
 		n += 1
 		x = xmin - alpha * grad(xmin)
 
 		dx = norm(x - xmin)
 		if dx < xtol:
-			return (x, fvalues)
+			# print("(Success!) Gradiend descent: dx = %.4g after %i iterations" % (dx, n))
+			# return (x, fvalues)
+			break
 		elif f(x) >= fmin:
 			alpha /= 2
 		else:
 			xmin = x
 			fmin = f(x)
 			fvalues.append(fmin)
+
+	print("Gradiend descent: dx = %.4g after %i iterations" % (dx, n))
 	
-	print("Gradiend descent: dx = %.15f after %i iterations" % (dx, maxiter))
-	return (xmin, fvalues)
+	return (x, fvalues)
 
 
 

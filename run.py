@@ -1,49 +1,39 @@
 import csv
+import sys
 
 from prepare import *
 from view import *
 from learn import *
 from view import *
 
-# Разделим выборку на трети
-# Обучим по 2/3, проверим по 1/3
+""" Процент данных, по которым обучаем"""
+PERCENT = 70
 
-data, answers = load_data_set('train_data.csv', 'train_answers.csv')
-data = normalize(data)
+""" Точность поиска """
+ACCURACY = 1e-10
 
-n = answers.size
-n_learn = 2 * (n // 3)
-n_check = n - n_learn
+""" Ограничение по итерациям (пока не нужно) """
+MAX_ITER = -1
 
-def get_param():
-	# param = teach(data[:, :], answers[:])
-	learning_curve(data, answers)
-
-	# return param
-
-
-get_param()
-# print(get_param())
 
 # Joseph: 5000 итераций градиентного спуска:
 # 	param = [4.98803499, -3.80921867, -2.51819642, -2.93658204, 0.27530952]
 # Luci: хрен знает как:
 # 	param = [4.88031677, -3.65326592, -2.51913162, -2.52432301, -1.80838042]
 
-def count_error():
-	param = [4.98803499, -3.80921867, -2.51819642, -2.93658204, 0.27530952]
-	# param = get_param()
-	print(param)
-	classified = classify(param, data[n_learn:, :])
+# На первых 2-х третях (по ним обучали): 80.46
+# На последней трети (по которой не обучали): 79.83
 
-	n_error = 0
-	for forcast, answer in zip(classified, answers[n_learn:]):
-		if forcast != answer:
-			n_error += 1
+data, answers = load_data_set('train_data.csv', 'train_answers.csv')
+data = normalize(data)
 
-	# На первых 2-х тертях (по ним обучали): 80.46
-	# На последней трети (по которой не обучали): 79.83
-	print(1 - n_error / n_check)
+n = answers.size
+n_learn = round(PERCENT / 100 * n)
+n_check = n - n_learn
+
+param = teach(data[: n_learn, :], answers[: n_learn], ACCURACY, MAX_ITER)
+print_count_error(param, data, answers, PERCENT)
+
 
 # count_error()
 
@@ -57,6 +47,7 @@ def parse_row(row):
 
 	parsed = [f(1), sex, f(4), f(8)]
 	return parsed
+
 
 def process_test():
 	# Ща будет еще костыль!

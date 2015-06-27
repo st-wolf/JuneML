@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from learn import cost, grad
 from optimize import gradien_descent
 
-def learning_curve(features, answers):
+def show_learning_curve(features, answers):
 	"""
 	Рисует кривую обучения (зависомость cost от итераций)
 	"""
@@ -16,7 +16,7 @@ def learning_curve(features, answers):
 		lambda param: cost(param, features, answers, rate),
 		lambda param: grad(param, features, answers, rate),
 		param_init,
-		maxiter = 500 )
+		maxiter = -1 )
 
 	plt.plot(cost_values)
 	plt.show()

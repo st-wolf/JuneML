@@ -16,6 +16,19 @@ ACCURACY = 1e-10
 MAX_ITER = -1
 
 
+def visualize(param):
+	# 1 - pclass, 2 - sex, 3 - age, 4 - fare
+	# param = np.array([4.66641156, -3.40293505, -2.54710512, -2.48068236, -1.57692318])
+	f_numbers = (3, 4)
+	names = ["age", "pclass"]
+	x_range = (0,1)
+	y_range = (-10.2, 10.2)
+
+	# show_classes(data[:, 3], data[:, 4], answers, names)
+
+	decision_boundary(param, f_numbers, x_range, y_range, names)
+
+
 # Joseph: 5000 итераций градиентного спуска:
 # 	param = [4.98803499, -3.80921867, -2.51819642, -2.93658204, 0.27530952]
 # Luci: хрен знает как:
@@ -31,11 +44,34 @@ n = answers.size
 n_learn = round(PERCENT / 100 * n)
 n_check = n - n_learn
 
-param = teach(data[: n_learn, :], answers[: n_learn], ACCURACY, MAX_ITER)
-print_count_error(param, data, answers, PERCENT)
+# param = teach(data[: n_learn, :], answers[: n_learn], ACCURACY, MAX_ITER)
+param = np.array([ 4.89085446, -3.66134518, -2.52088422, -2.53439721, -1.81757197])
+
+# print_count_error(param, data, answers, PERCENT)
+
+visualize(param)
 
 
-# count_error()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Костылищщи! 
 # Не думай об этом, лучше я объясню тебе, в чем проблема 
@@ -77,15 +113,6 @@ def process_test():
 		for pass_id, forcast in zip(ids, classified):
 			answers_writer.writerow([pass_id, int(forcast)])
 
-def vizualize():
-	# 1 - pclass, 2 - sex, 3 - age, 4 - fare
-	param = np.array([4.66641156, -3.40293505, -2.54710512, -2.48068236, -1.57692318])
-	f_numbers = (1, 4)
-	names = ["age", "fare"]
-	x_range = (0,1)
-	y_range = (-0.2, 1.2)
 
-	show_classes(data[:, 3], data[:, 4], answers, names)
-	# decision_boundary(param, f_numbers, x_range, y_range, names)
 
 

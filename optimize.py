@@ -19,7 +19,7 @@ def newtons_method(func, grad, x0, xtol = 1e-10, maxiter = 200):
 
 	pass
 
-def gradien_descent(f, grad, x0, xtol = 1e-10, maxiter = 200):
+def gradient_descent(f, grad, x0, xtol = 1e-10, maxiter = 200):
 	""" 
 	Метод градиентного спуска
  
@@ -46,10 +46,11 @@ def gradien_descent(f, grad, x0, xtol = 1e-10, maxiter = 200):
 		n += 1
 		x = xmin - alpha * grad(xmin)
 
+		cost_norm = norm(grad(x))
+		print(cost_norm)
 		dx = norm(x - xmin)
-		if dx < xtol:
-			# print("(Success!) Gradiend descent: dx = %.4g after %i iterations" % (dx, n))
-			# return (x, fvalues)
+
+		if (cost_norm < xtol) or (dx == 0):
 			break
 		elif f(x) >= fmin:
 			alpha /= 2
@@ -58,7 +59,7 @@ def gradien_descent(f, grad, x0, xtol = 1e-10, maxiter = 200):
 			fmin = f(x)
 			fvalues.append(fmin)
 
-	print("Gradiend descent: dx = %.4g after %i iterations" % (dx, n))
+	print("Gradient descent: cost_norm = %.4g after %i iterations" % (cost_norm, n))
 	
 	return (x, fvalues)
 

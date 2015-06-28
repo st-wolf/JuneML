@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from learn import cost, grad
-from optimize import gradien_descent
+from optimize import gradient_descent
 
 def show_learning_curve(features, answers):
 	"""
@@ -12,7 +12,7 @@ def show_learning_curve(features, answers):
 	rate = 0
 	param_init = np.zeros(features.shape[1])
 
-	_, cost_values = gradien_descent(
+	_, cost_values = gradient_descent(
 		lambda param: cost(param, features, answers, rate),
 		lambda param: grad(param, features, answers, rate),
 		param_init,
@@ -44,13 +44,14 @@ def show_classes(x1, x2, y, names = []):
 # Нужно иметь возможность добавить их и модель обучения тоже!
 
 # Стоит сделать функцию более общей, передавая в нее классификатор, значения классов и т.д.
+
 def decision_boundary(param, f_numbers, x_range, y_range, names = []):
 	"""
 	Рисует проекцию разделяющей поверхности на плоскость двух параметров
 
 	Args:
 		param (ndarray):
-		f_numbers (2d tupples): номера признаков, определяющих плоскость проекции
+		f_numbers (2d tuples): номера признаков, определяющих плоскость проекции
 		x_range (2d tuple): диапазон знанчени по оси x
 		y_range (2d tuple): диапазон значений по оси y
 
@@ -58,13 +59,15 @@ def decision_boundary(param, f_numbers, x_range, y_range, names = []):
 		None
 	"""
 
-	n_x = n_y = 10;
+	n_x = n_y = 10
 
 	x = np.linspace(x_range[0], x_range[1], n_x)
+	# print(x)
 	y = np.linspace(y_range[0], y_range[1], n_y)
+	# print(y)
 	X, Y = np.meshgrid(x, y)
 
-	# Векторизуем, сделав один вызов функции classify
+
 	# Разворачиваем матрицы в строку
 	x_unroll = X.reshape(n_x * n_y)
 	y_unroll = Y.reshape(n_x * n_y)
@@ -72,15 +75,21 @@ def decision_boundary(param, f_numbers, x_range, y_range, names = []):
 	ix, iy = f_numbers
 	f_matrix = np.zeros((n_x * n_y, param.size))
 
+
+
 	f_matrix[:, 0] = np.ones(n_x * n_y)
 	f_matrix[:, ix] = x_unroll
 	f_matrix[:, iy] = y_unroll
+
+	print(f_matrix)
 
 	hypothesis = np.dot(f_matrix, param)
 
 	Z = hypothesis.reshape((n_x, n_y))
 
-	plt.contour(X, Y, Z, levels = [0])
+	print(Z)
+
+	plt.contour(X, Y, Z)
 
 	if len(names) == 2:
 		plt.xlabel(names[0])

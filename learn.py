@@ -32,7 +32,7 @@ def cost(param, x, y, rate = 0):
 
 def grad(param, x, y, rate = 0):
 	"""
-	Векторизованный градиет функции стоимости
+	Векторизованный градиент функции стоимости
 	"""
 
 	m = y.size
@@ -58,7 +58,7 @@ def teach(x, y, accuracy, maxiter):
 	
 	param_init = np.zeros(x.shape[1])
 
-	param, _ = gradien_descent(
+	param, _ = gradient_descent(
 		lambda param: cost(param, x, y, rate),
 		lambda param: grad(param, x, y, rate),
 		param_init,
